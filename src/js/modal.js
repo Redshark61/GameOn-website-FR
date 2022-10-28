@@ -51,7 +51,6 @@ $formData.forEach(($inputBlock) => {
 	});
 });
 
-// close modal $form on click
 $closeBtns.forEach(
 	/** @param {HTMLElement} $btn */
 	($btn) => {
