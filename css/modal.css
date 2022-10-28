@@ -523,10 +523,12 @@ footer {
 	}
 	.content {
 		margin: 0;
+		max-width: none;
+		height: 100%;
 	}
 	.bground {
 		background: #fff;
-		padding-top: 85px;
+		margin-top: 70px;
 	}
 }
 

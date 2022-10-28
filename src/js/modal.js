@@ -68,6 +68,12 @@ if ($form) {
 function launchModal() {
 	if ($modalBg) {
 		$modalBg.style.display = "block";
+		if (document.body.clientWidth < 800) {
+			const $nav = document.getElementById("myTopnav");
+			$modalBg.style.marginTop = $nav?.clientHeight + "px";
+		} else {
+			$modalBg.style.marginTop = "0px";
+		}
 		toggleBodyOverflow();
 		$formData.forEach(($input) => {
 			$input.removeAttribute("data-error");
