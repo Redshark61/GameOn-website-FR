@@ -1,16 +1,23 @@
+"use strict";
 // DOM Elements
-const $modalBg = document.querySelector<HTMLDivElement>(".bground");
-const $modalBtn = document.querySelectorAll<HTMLButtonElement>(".modal-btn");
-const $formData = document.querySelectorAll<HTMLDivElement>(".formData");
-const $closeBtns = document.querySelectorAll<HTMLElement>("[data-action='close']");
-const $form = document.querySelector<HTMLFormElement>('[name="reserve"]');
-const $firstname = document.getElementById("first") as HTMLInputElement | null;
-const $lastname = document.getElementById("last") as HTMLInputElement | null;
-const $email = document.getElementById("email") as HTMLInputElement | null;
-const $birthdate = document.getElementById("birthdate") as HTMLInputElement | null;
-const $quantity = document.getElementById("quantity") as HTMLInputElement | null;
-const $locations = document.querySelectorAll<HTMLInputElement>(".checkbox-input[type='radio']");
-const $conditions = document.getElementById("checkbox1") as HTMLInputElement | null;
+const $modalBg = /** @type {HTMLDivElement} */ (document.querySelector(".bground"));
+const $modalBtn = /** @type {NodeListOf<HTMLButtonElement>} */ (
+	document.querySelectorAll(".modal-btn")
+);
+const $formData = /** @type {NodeListOf<HTMLDivElement>} */ (
+	document.querySelectorAll(".formData")
+);
+const $closeBtns = document.querySelectorAll("[data-action='close']");
+const $form = /** @type {HTMLFormElement} */ (document.querySelector('[name="reserve"]'));
+const $firstname = /** @type {HTMLInputElement} */ (document.getElementById("first"));
+const $lastname = /** @type {HTMLInputElement} */ (document.getElementById("last"));
+const $email = /** @type {HTMLInputElement} */ (document.getElementById("email"));
+const $birthdate = /** @type {HTMLInputElement} */ (document.getElementById("birthdate"));
+const $quantity = /** @type {HTMLInputElement} */ (document.getElementById("quantity"));
+const $locations = /** @type {NodeListOf<HTMLInputElement>} */ (
+	document.querySelectorAll(".checkbox-input[type='radio']")
+);
+const $conditions = /** @type {HTMLInputElement} */ (document.getElementById("checkbox1"));
 
 function editNav() {
 	var $x = document.getElementById("myTopnav");
@@ -32,7 +39,6 @@ $modalBtn.forEach(($btn) => $btn.addEventListener("click", launchModal));
 $formData.forEach(($inputBlock) => {
 	// get the input elements from its parent
 	const inputs = $inputBlock.querySelectorAll("input");
-
 	inputs.forEach((input) => {
 		// remove the data-error and data-error-visible attributes from
 		// the parent element when the input is clicked
@@ -49,7 +55,6 @@ $closeBtns.forEach(($btn) => {
 });
 
 // listen for submit event
-
 if ($form) {
 	$form.addEventListener("submit", validateform);
 } else {
@@ -79,7 +84,7 @@ function launchModal() {
  * @param {string} email
  * @returns boolean
  */
-function validateemail(email: string): boolean {
+function validateemail(email) {
 	// const re = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,}$/g;
 	const re = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,63})$/;
 	return re.test(email);
@@ -89,8 +94,8 @@ function validateemail(email: string): boolean {
  * @description
  * This function is used to close the modal $form
  */
-function closeModal($btn: HTMLElement) {
-	const $parentModal = $btn.closest<HTMLElement>("[data-container='modal']");
+function closeModal($btn) {
+	const $parentModal = $btn.closest("[data-container='modal']");
 	if ($parentModal) {
 		$parentModal.style.display = "none";
 		toggleBodyOverflow();
@@ -105,9 +110,8 @@ function closeModal($btn: HTMLElement) {
  * @param {HTMLInputElement} $input
  * @param {string} message
  */
-function showError($input: HTMLInputElement, message: string) {
+function showError($input, message) {
 	const $formControl = $input?.parentElement;
-
 	// add the data-error attribute to the parent element
 	$formControl?.setAttribute("data-error", message);
 	$formControl?.setAttribute("data-error-visible", "true");
@@ -118,38 +122,42 @@ function showError($input: HTMLInputElement, message: string) {
  * This function is used to validate the $form
  * @param {SubmitEvent} e
  */
-function validateform(e: SubmitEvent) {
+function validateform(e) {
 	e.preventDefault();
-
 	let isValid = true;
+
 	// check if $firstname is empty
 	if ($firstname && $firstname?.value.trim().length < 2) {
 		showError($firstname, "Le prénom est requis");
 		isValid = false;
 	}
+
 	// check if $lastname is empty
 	if ($lastname && $lastname.value.trim().length < 2) {
 		showError($lastname, "Le nom de famille est requis");
 		isValid = false;
 	}
+
 	// check if $email is empty or invalid
 	if ($email && ($email.value.trim().length < 2 || !validateemail($email?.value || ""))) {
 		showError($email, "Un email valide est requis");
 		isValid = false;
 	}
+
 	// check if $birthdate is empty
 	if ($birthdate && ($birthdate.value.trim() === "" || !birthdateValidation($birthdate.value))) {
 		showError($birthdate, "Une date de naissance valide est requise");
 		isValid = false;
 	}
+
 	// check if $quantity is empty
 	if ($quantity && ($quantity.value.trim() === "" || isNaN(+$quantity?.value))) {
 		showError($quantity, "Une quantité valide est requise");
 		isValid = false;
 	}
+
 	// check if at least one location is checked
 	let locationChecked = Array.from($locations).some((location) => location.checked);
-
 	if (!locationChecked) {
 		showError($locations[0], "Une ville est requise");
 		isValid = false;
@@ -162,7 +170,7 @@ function validateform(e: SubmitEvent) {
 	}
 
 	if (isValid) {
-		closeModal(e.target as HTMLElement);
+		closeModal(e.target);
 		$form?.reset();
 		openThankYouModal();
 	}
@@ -170,7 +178,7 @@ function validateform(e: SubmitEvent) {
 
 function openThankYouModal() {
 	toggleBodyOverflow();
-	const $thankYouModal = document.querySelector<HTMLDivElement>("#thanks-modal");
+	const $thankYouModal = /** @type {HTMLElement} */ (document.querySelector("#thanks-modal"));
 	if ($thankYouModal) {
 		$thankYouModal.style.display = "block";
 	} else {
@@ -179,11 +187,10 @@ function openThankYouModal() {
 }
 
 /**
- *
  * @param {string} birth
  * @returns boolean
  */
-function birthdateValidation(birth: string): boolean {
+function birthdateValidation(birth) {
 	const today = new Date();
 	const birthdate = new Date(birth);
 	return birthdate < today;
