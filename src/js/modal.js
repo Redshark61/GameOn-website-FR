@@ -7,7 +7,7 @@ const $modalBtn = /** @type {NodeListOf<HTMLButtonElement>} */ (
 const $formData = /** @type {NodeListOf<HTMLDivElement>} */ (
 	document.querySelectorAll(".formData")
 );
-const $closeBtns = /** @type {NodeListOf<HTMLButtonElement>} */ (
+const $closeBtns = /** @type {NodeListOf<HTMLElement>} */ (
 	document.querySelectorAll("[data-action='close']")
 );
 const $form = /** @type {HTMLFormElement} */ (document.querySelector('[name="reserve"]'));
@@ -53,7 +53,7 @@ $formData.forEach(($inputBlock) => {
 
 // close modal $form on click
 $closeBtns.forEach(
-	/** @param {HTMLButtonElement} $btn */
+	/** @param {HTMLElement} $btn */
 	($btn) => {
 		$btn.addEventListener("click", () => closeModal($btn));
 	}
