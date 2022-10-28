@@ -7,7 +7,9 @@ const $modalBtn = /** @type {NodeListOf<HTMLButtonElement>} */ (
 const $formData = /** @type {NodeListOf<HTMLDivElement>} */ (
 	document.querySelectorAll(".formData")
 );
-const $closeBtns = document.querySelectorAll("[data-action='close']");
+const $closeBtns = /** @type {NodeListOf<HTMLButtonElement>} */ (
+	document.querySelectorAll("[data-action='close']")
+);
 const $form = /** @type {HTMLFormElement} */ (document.querySelector('[name="reserve"]'));
 const $firstname = /** @type {HTMLInputElement} */ (document.getElementById("first"));
 const $lastname = /** @type {HTMLInputElement} */ (document.getElementById("last"));
@@ -50,9 +52,12 @@ $formData.forEach(($inputBlock) => {
 });
 
 // close modal $form on click
-$closeBtns.forEach(($btn) => {
-	$btn.addEventListener("click", () => closeModal($btn));
-});
+$closeBtns.forEach(
+	/** @param {HTMLButtonElement} $btn */
+	($btn) => {
+		$btn.addEventListener("click", () => closeModal($btn));
+	}
+);
 
 // listen for submit event
 if ($form) {
@@ -99,9 +104,11 @@ function validateemail(email) {
 /**
  * @description
  * This function is used to close the modal $form
+ * @param {HTMLElement} $element
  */
-function closeModal($btn) {
-	const $parentModal = $btn.closest("[data-container='modal']");
+function closeModal($element) {
+	/** @type {HTMLElement | null} */
+	const $parentModal = $element.closest("[data-container='modal']");
 	if ($parentModal) {
 		$parentModal.style.display = "none";
 		toggleBodyOverflow();
@@ -176,7 +183,7 @@ function validateform(e) {
 	}
 
 	if (isValid) {
-		closeModal(e.target);
+		closeModal(/** @type {HTMLElement} */ (e.target));
 		$form?.reset();
 		openThankYouModal();
 	}
