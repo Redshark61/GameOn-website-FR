@@ -94,8 +94,7 @@ function launchModal() {
  * @param {string} email
  * @returns boolean
  */
-function validateemail(email) {
-	// const re = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,}$/g;
+function validateEmail(email) {
 	const re = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,63})$/;
 	return re.test(email);
 }
@@ -139,31 +138,31 @@ function validateform(e) {
 	let isValid = true;
 
 	// check if $firstname is empty
-	if ($firstname && $firstname?.value.trim().length < 2) {
+	if (!$firstname || $firstname.value.trim().length < 2) {
 		showError($firstname, "Le prénom est requis");
 		isValid = false;
 	}
 
 	// check if $lastname is empty
-	if ($lastname && $lastname.value.trim().length < 2) {
+	if (!$lastname || $lastname.value.trim().length < 2) {
 		showError($lastname, "Le nom de famille est requis");
 		isValid = false;
 	}
 
 	// check if $email is empty or invalid
-	if ($email && ($email.value.trim().length < 2 || !validateemail($email?.value || ""))) {
+	if (!$email || $email.value.trim().length < 2 || !validateEmail($email?.value || "")) {
 		showError($email, "Un email valide est requis");
 		isValid = false;
 	}
 
 	// check if $birthdate is empty
-	if ($birthdate && ($birthdate.value.trim() === "" || !birthdateValidation($birthdate.value))) {
+	if (!$birthdate || $birthdate.value.trim() === "" || !birthdateValidation($birthdate.value)) {
 		showError($birthdate, "Une date de naissance valide est requise");
 		isValid = false;
 	}
 
 	// check if $quantity is empty
-	if ($quantity && ($quantity.value.trim() === "" || isNaN(+$quantity?.value))) {
+	if (!$quantity || $quantity.value.trim() === "" || isNaN(+$quantity?.value)) {
 		showError($quantity, "Une quantité valide est requise");
 		isValid = false;
 	}
@@ -176,7 +175,7 @@ function validateform(e) {
 	}
 
 	// check if $conditions is checked
-	if ($conditions && !$conditions?.checked) {
+	if (!$conditions.checked) {
 		showError($conditions, "Vous devez accepter les conditions d'utilisation");
 		isValid = false;
 	}
